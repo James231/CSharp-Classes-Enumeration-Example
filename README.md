@@ -36,7 +36,7 @@ public static class SingletonReferences {
     public static MyClass2 MyClass1Instance;
 }
 
-MyInterface myClass = SingletonReferences.MyClass1Instance;
+IMyInterface myClass = SingletonReferences.MyClass1Instance;
 
 myClass = SingletonReferences.MyClass2Instance;
 
@@ -52,20 +52,20 @@ Here are a few reasons:
 
 ## How to create your enum:
 
-Firstly all your classes need to use a common interface or base class, in this case both our classes implement `MyInterface`:
+Firstly all your classes need to use a common interface or base class, in this case both our classes implement `IMyInterface`:
 ```cs
-public interface MyInterface
+public interface IMyInterface
 {
     void MyCommonMethod();
 }
-class MyClass1 : MyInterface
+class MyClass1 : IMyInterface
 {
     public void MyCommonMethod()
     {
         Console.WriteLine("Method on MyClass1 called");
     }
 }
-class MyClass2 : MyInterface
+class MyClass2 : IMyInterface
 {
     public void MyCommonMethod()
     {
@@ -77,12 +77,12 @@ class MyClass2 : MyInterface
 Then you need to create your enum type. This cannot be done using `public enum MyEnum { ... }`, instead you create a class which inherits from `Enumeration<T>` where `T` is the type of your interface (or base class). You create your 'options' as `static readonly` fields, and set them to be instances of your `MyEnum` type where you pass instances of your classes `MyClass1` and `MyClass2` into the constructor.
 
 ```cs
-public class MyEnum : Enumeration<MyInterface>
+public class MyEnum : Enumeration<IMyInterface>
 {
     public static readonly MyEnum MyClass1 = new MyEnum(new MyClass1());
     public static readonly MyEnum MyClass2 = new MyEnum(new MyClass2());
 
-    public MyEnum(MyInterface obj)
+    public MyEnum(IMyInterface obj)
         : base(obj)
     {
     }
@@ -93,7 +93,7 @@ Then we are done! You can create an instance of your enum in the usual way:
 ```
 MyEnum myEnum = MyEnum.MyClass1;
 ```
-and your variable `myEnum` can either have values `MyEnum.MyClass1` or `MyEnum.MyClass2` (or `null`). Then you can access methods/fields through `myEnum.Value` which returns the instance of MyInterface.
+and your variable `myEnum` can either have values `MyEnum.MyClass1` or `MyEnum.MyClass2` (or `null`). Then you can access methods/fields through `myEnum.Value` which returns the instance of `IMyInterface`.
 
 ## Serialization
 
@@ -136,6 +136,6 @@ convereter as a reference.
 
 4. Other C# devs might see this in your code and question it. It is not standard so might be hard for some to understand.
 
-5. The standard approach isn't that bad. You can just make your classes singletons (without `static`) and pass them around with instances of `MyInterface` instead. If you are using Dependency Injection, then it should be obvious the classes are singletons. If not, then forcing singletons might make you code a bit harder to read, but C# Devs are likely to be familiar with this approach already.
+5. The standard approach isn't that bad. You can just make your classes singletons (without `static`) and pass them around with instances of `IMyInterface` instead. If you are using Dependency Injection, then it should be obvious the classes are singletons. If not, then forcing singletons might make you code a bit harder to read, but C# Devs are likely to be familiar with this approach already.
 
 Also if you want an enum, but you want to store more data in each option than just a name ... then reconsider whether you should really be hardcoding all that information at all. It might be better off dynamically loaded.

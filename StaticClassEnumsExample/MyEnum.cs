@@ -4,12 +4,12 @@ using System.Text;
 
 namespace StaticClassEnumsExample
 {
-    public class MyEnum : Enumeration<MyInterface>
+    public class MyEnum : Enumeration<IMyInterface>
     {
         public static readonly MyEnum MyClass1 = new MyEnum(new MyClass1());
         public static readonly MyEnum MyClass2 = new MyEnum(new MyClass2());
 
-        public MyEnum(MyInterface obj)
+        public MyEnum(IMyInterface obj)
         : base(obj)
         {
         }

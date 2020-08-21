@@ -4,7 +4,7 @@ using System.Text;
 
 namespace StaticClassEnumsExample
 {
-    public class MyClass2: MyInterface
+    public class MyClass2: IMyInterface
     {
         public void MyCommonMethod()
         {
