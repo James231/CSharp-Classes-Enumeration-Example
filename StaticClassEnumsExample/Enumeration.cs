@@ -3,18 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace StaticClassEnumsExample
 {
     public abstract class Enumeration<U> : IComparable
     {
+        [JsonPropertyName("id")]
+        public string Id { get; protected set; }
+
+        [JsonIgnore]
         public U Value { get; private set; }
 
-        public int Id { get; private set; }
-
-        protected Enumeration(int id, U value)
+        protected Enumeration(U value)
         {
-            Id = id;
+            Id = value.GetType().ToString();
             Value = value;
         }
 

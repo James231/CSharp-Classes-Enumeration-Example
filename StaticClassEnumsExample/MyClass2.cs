@@ -8,7 +8,7 @@ namespace StaticClassEnumsExample
     {
         public void MyCommonMethod()
         {
-            Console.WriteLine("Method on MyClass1 called");
+            Console.WriteLine("Method on MyClass2 called");
         }
     }
 }

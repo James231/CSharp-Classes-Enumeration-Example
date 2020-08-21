@@ -1,4 +1,7 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
+using System.Text.Json;
 
 namespace StaticClassEnumsExample
 {
@@ -10,10 +13,20 @@ namespace StaticClassEnumsExample
             MyEnum myEnum = MyEnum.MyClass1;
 
             // Set another class value
-            myEnum = MyEnum.MyClass2;
+            myEnum = MyEnum.MyClass1;
 
-            // Can invoke method from the  class
-            myEnum.Value.MyCommonMethod();
+            // For serialization with System.Text.Json we need to register a custom converter
+            var serializeOptions = new JsonSerializerOptions();
+            serializeOptions.Converters.Add(new EnumerationConverter());
+
+            // Serialize to JSON
+            string json = JsonSerializer.Serialize(myEnum, serializeOptions);
+
+            // Deserialize back to MyEnum
+            MyEnum deserializedEnum = JsonSerializer.Deserialize<MyEnum>(json, serializeOptions);
+
+            // Can invoke method from the class
+            deserializedEnum.Value.MyCommonMethod();
         }
     }
 }
